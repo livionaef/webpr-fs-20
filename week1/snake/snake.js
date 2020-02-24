@@ -1,38 +1,36 @@
+const north = {dx:  0, dy: -1}; // from z.B. (x, 5) to (x, 4) ^
+const east  = {dx:  1, dy:  0}; // right
+const south = {dx:  0, dy:  1}; // down
+const west  = {dx: -1, dy:  0}; // left
 
-const north = {dx:  0, dy: -1};
-const east  = {dx:  1, dy:  0};
-const south = {dx:  0, dy:  1};
-const west  = {dx: -1, dy:  0};
+let direction = north; 
 
-let direction = north;
-
-const clockwise = [north, east, south, west, north];
-const countercw = [north, west, south, east, north];
+const clockwise = [north, east, south, west, north]; // from one to each other -> next steps clockwise
+const countercw = [north, west, south, east, north]; // gegen Uhrzeigersinn
 
 let snake = [
-    {x: 10, y: 5},
+    {x: 10, y: 5}, // startposition
     {x: 10, y: 6},
     {x: 10, y: 7},
     {x: 10, y: 8},
 ];
-let food = {x: 15, y: 15};
+let food = {x: 15, y: 15}; // first position of food
 
-function snakeEquals(a, b) { 
-	/* fill here */
-}
+const snakeEquals = (a, b) => a.x === b.x && a.y === b.y;
 
 function changeDirection(orientation) {
-    /* fill here */
+    direction = orientation[orientation.indexOf(direction) + 1];
 }
 
+/* Game loop */
 function start() {
     const canvas  = document.getElementById("canvas");
     const context = canvas.getContext("2d");
 
     const rightArrow = 39;
     const leftArrow  = 37;
-    window.onkeydown = evt => {
-        const orientation = (evt.keyCode === rightArrow) ? clockwise : countercw;
+    window.onkeydown = event => {
+        const orientation = (event.keyCode === rightArrow) ? clockwise : countercw; // if right arrow -> Uhrzeigersinn
         changeDirection(orientation);
     };
 
@@ -42,6 +40,7 @@ function start() {
     }, 1000 / 5);
 }
 
+/* Calculate the next Board */
 function nextBoard() {
     const maxX = 20;
     const maxY = 20;
@@ -53,6 +52,7 @@ function nextBoard() {
         return x
     }
 
+    // calculate the new head
     const head = {
         x: inBounds(oldHead.x + direction.dx, maxX),
         y: inBounds(oldHead.y + direction.dy, maxY)
@@ -61,11 +61,10 @@ function nextBoard() {
     if (snakeEquals(food, head)) {  // have we found any food?
         food.x = Math.floor(Math.random() * 20);   // place new food at random location
         food.y = Math.floor(Math.random() * 20);
-    } else {
-        /* fill here */ // no food found => no growth despite new head => remove last element
+    } else { // no food found => no growth despite new head 
+        snake.pop(); // remove last element
     }
-
-    /* fill here */; // put head at front of the list
+    snake.unshift(head); // put head at front of the list
 }
 
 function display(context) {
