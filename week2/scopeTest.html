@@ -5,13 +5,24 @@
     <title>Scope Tests</title>
 </head>
 <body>
-    <script>
+    <pre><script>
+        const id = x => x; // id
+        document.writeln(id(id) === id);
 
+        const fst = x => y => x; // konst
+        document.writeln(fst(id)() === id);
+        document.writeln(fst(id)(fst) === id);
+        document.writeln(fst(id)("anything") === id);
 
+        const one = fst(1);
+        document.writeln(one(1000) === 1);
 
-
-
-    </script>
+        //const snd = x => y => y;
+        //const snd = x => id;
+        //const snd = x => fst(id)(x);
+        const snd = fst(id);
+        document.writeln(snd(1000)(1) === 1);
+    </script></pre>
 </body>
 </html>
 
