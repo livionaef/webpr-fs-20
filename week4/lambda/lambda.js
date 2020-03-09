@@ -1,4 +1,3 @@
-
 // atoms
 const id    = x =>      x;
 const konst = x => y => x;

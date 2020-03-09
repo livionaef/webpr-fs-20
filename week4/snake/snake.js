@@ -1,6 +1,5 @@
 // requires ../lambda/lambda.js
 
-
 const north = Pair( 0)(-1);
 const east  = Pair( 1)( 0);
 const south = Pair( 0)( 1);
@@ -19,14 +18,17 @@ let snake = [
 ];
 let food = Pair(15)(15);
 
+const x = fst;
+const y = snd;
+
 // function snakeEquals(a, b) { return a.x === b.x && a.y === b.y }
-const pairEq = a => b =>  undefined; // todo: your code here
+const pairEq = a => b =>  a(x) === b(x) && a(y) === b(y);
 
 // Pair + Pair = Pair        // Monoid
-const pairPlus = a => b =>  undefined; // todo: your code here
+const pairPlus = a => b => Pair (a(fst) + b(fst)) (a(snd) + b(snd));
 
 // Function and Pair = Pair  // Functor
-const pairMap = f => p =>  undefined; // todo: your code here
+const pairMap = f => p => Pair (f(p(fst))) (f(p(snd)));
 
 
 function changeDirection(orientation) {
@@ -47,9 +49,9 @@ function safeGetElementById(id) {
 const log = s => console.log(s);
 
 function start() {
-
-    // todo: if safeGetElementById("canvas") yields an error message, log it. Otherwise startWithCanvas
-
+    either (safeGetElementById("canvas"))
+            (console.log)   // error case
+            (startWithCanvas) // ok case
 }
 
 const startWithCanvas = canvas => {
@@ -112,5 +114,3 @@ function display(context) {
 function fillBox(context, element) {
     context.fillRect(fst(element) * 20 + 1, snd(element) * 20 + 1, 18, 18);
 }
-
-
