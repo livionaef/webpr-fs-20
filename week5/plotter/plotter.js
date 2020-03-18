@@ -1,16 +1,22 @@
 
-const minX =  0;
-const maxX =  6;
+const minX = 0;
+const maxX = 6;
 const minY = -1;
-const maxY =  1;
+const maxY = 1;
 
 function start() {
     const userFunction = document.getElementById('user_function');
-    const canvas       = document.getElementById('canvas');
-    const context      = canvas.getContext("2d");
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext("2d");
 
-    // todo: how to display?
+    // How to display
+    const update = () => {
+        const f = Function('x', 'return ' + userFunction.value);
+        display(context, f);
+    };
+    update();
 
+    userFunction.onchange = text => update();
 }
 
 function display(context, f) {
@@ -39,5 +45,5 @@ const normalizeY = height => y => {
 
 const normalizeX = width => x => {
     let scaleFactor = width / (maxX - minX);
-    return ( x - minX) * scaleFactor;
+    return (x - minX) * scaleFactor;
 };
